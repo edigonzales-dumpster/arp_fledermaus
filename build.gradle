@@ -1,0 +1,94 @@
+buildscript {
+    repositories {
+        maven { url "https://repo.osgeo.org/repository/release/" }
+        maven { url "http://jars.interlis.ch" }
+        maven { url "https://plugins.gradle.org/m2/" }
+        mavenCentral()
+    }
+    dependencies {
+        classpath "ch.so.agi:gretl:2.0.231"
+    }
+}
+
+apply plugin: "ch.so.agi.gretl"
+
+import ch.so.agi.gretl.tasks.*
+import ch.so.agi.gretl.util.TaskUtil
+import java.nio.file.Paths
+import java.nio.file.Files
+import java.io.FileOutputStream
+import org.apache.commons.net.ftp.*
+
+
+//def pathToTempFolder = System.getProperty("java.io.tmpdir")
+def pathToTempFolder = Files.createTempDirectory("arpfledermaus-").toFile().getAbsolutePath()
+def remoteFileName = "export.csv"
+def localFileName = "export.csv"
+
+def server = ftpServerFledermaus
+def user = ftpUserFledermaus
+def password = ftpPwdFledermaus
+
+task downloadData() {
+    doLast {
+        def ftp = new FTPClient()
+
+        try {
+            ftp.connect(server, 21)
+            ftp.login(user, password)
+
+            int reply = ftp.getReplyCode();
+            if(!FTPReply.isPositiveCompletion(reply)) {
+                throw new Exception("FTP server refused connection.")
+            }
+
+            String fileName = Paths.get(pathToTempFolder, localFileName).toFile().getAbsoluteFile()
+            FileOutputStream fos = new FileOutputStream(fileName)
+
+            boolean response = ftp.retrieveFile(remoteFileName, fos)
+            if (response == false) {
+                throw new Exception("Could not retrieve file: " + remoteFileName)
+            }
+            println "File downloaded: " + fileName
+        } catch (Exception e) {
+            GradleException ge = TaskUtil.toGradleException(e)
+            throw ge;
+        } finally {
+            if(ftp.isConnected()) {
+                try {
+                    ftp.disconnect()
+                } catch(IOException e) {
+                    // do nothing
+                }
+            }
+        }
+    }
+}
+
+task truncateTable(type: SqlExecutor, dependsOn: 'downloadData') {
+    description = "Leert die Tabelle arp_fledermaus.fledermausfundrte_fledermausfundort"
+    database = [dbUriEdit, dbUserEdit, dbPwdEdit]
+    sqlFiles = [
+            'truncate_table.sql'
+    ]
+}
+
+task validateCsv(type: CsvValidator, dependsOn: 'truncateTable') {
+    models = "SO_ARP_Fledermausfundorte_20200728"
+    modeldir = "./model;http://models.geo.admin.ch"
+    firstLineIsHeader = true
+    dataFiles = [pathToTempFolder.toString()+"/export.csv"]
+}
+
+task importCsv(type: CsvImport, dependsOn: 'validateCsv') {
+    database = [dbUriEdit, dbUserEdit, dbPwdEdit]
+    schemaName = "arp_fledermaus"
+    tableName = "fledermausfundrte_fledermausfundort"
+    firstLineIsHeader = true
+    valueSeparator = ","
+    encoding = "UTF-8"
+    dataFile = file(pathToTempFolder.toString()+"/export.csv")
+}
+
+
+// 

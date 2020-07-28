@@ -12,7 +12,7 @@ VERSION "2020-02-27"  =
   IMPORTS CHAdminCodes_V1,GeometryCHLV95_V1;
 
   TOPIC Fledermausfundorte =
-    OID AS INTERLIS.UUIDOID;
+    !!OID AS INTERLIS.UUIDOID;
 
     /** Fundorte der Fledermäuse
      */
@@ -23,11 +23,13 @@ VERSION "2020-02-27"  =
       artennameDeutsch : TEXT;
       quartierlink : INTERLIS.URI;
       beobachtunglink : INTERLIS.URI;
-      qex : TEXT*10;
+      qex : INTERLIS.XMLDate;
       inaktiv : 0 .. 255;
       verwaist : 0 .. 255;
       x_LV95 : 2400000.000 .. 2800000.000;
-      y_LV95 : 1100000.000 .. 1400000.000;
+      /** Range korrigieren!
+       */
+      y_LV95 : 0.000 .. 1400000.000;
       UNIQUE quartierid;
       UNIQUE beobachtungid;
     END Fledermausfundort;
