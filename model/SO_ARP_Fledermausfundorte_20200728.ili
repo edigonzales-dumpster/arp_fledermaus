@@ -1,0 +1,37 @@
+INTERLIS 2.3;
+
+/** !!------------------------------------------------------------------------------
+ *  !! Version    | wer | Änderung
+ *  !!------------------------------------------------------------------------------
+ *  !! 2020-07-28 | sz  | Ersterfassung
+ *  !!==============================================================================
+ */
+MODEL SO_ARP_Fledermausfundorte_20200728 (de)
+AT "http://www.geo.so.ch/models/ARP"
+VERSION "2020-02-27"  =
+  IMPORTS CHAdminCodes_V1,GeometryCHLV95_V1;
+
+  TOPIC Fledermausfundorte =
+    OID AS INTERLIS.UUIDOID;
+
+    /** Fundorte der Fledermäuse
+     */
+    CLASS Fledermausfundort =
+      bezeichnungKt : TEXT*50;
+      quartierid : TEXT*11;
+      beobachtungid : TEXT*11;
+      artennameDeutsch : TEXT;
+      quartierlink : INTERLIS.URI;
+      beobachtunglink : INTERLIS.URI;
+      qex : TEXT*10;
+      inaktiv : 0 .. 255;
+      verwaist : 0 .. 255;
+      x_LV95 : 2400000.000 .. 2800000.000;
+      y_LV95 : 1100000.000 .. 1400000.000;
+      UNIQUE quartierid;
+      UNIQUE beobachtungid;
+    END Fledermausfundort;
+
+  END Fledermausfundorte;
+
+END SO_ARP_Fledermausfundorte_20200728.
