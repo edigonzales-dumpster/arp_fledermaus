@@ -8,30 +8,50 @@ INTERLIS 2.3;
  */
 MODEL SO_ARP_Fledermausfundorte_20200728 (de)
 AT "http://www.geo.so.ch/models/ARP"
-VERSION "2020-02-27"  =
-  IMPORTS CHAdminCodes_V1,GeometryCHLV95_V1;
+VERSION "2020-07-28"  =
 
   TOPIC Fledermausfundorte =
-    !!OID AS INTERLIS.UUIDOID;
 
-    /** Fundorte der Fledermäuse
+    /** Fundorte der Fledermäuse. Import aus CSV-Datei.
      */
     CLASS Fledermausfundort =
-      bezeichnungKt : TEXT*50;
-      quartierid : TEXT*11;
-      beobachtungid : TEXT*11;
-      artennameDeutsch : TEXT;
-      quartierlink : INTERLIS.URI;
-      beobachtunglink : INTERLIS.URI;
-      qex : INTERLIS.XMLDate;
-      inaktiv : 0 .. 255;
-      verwaist : 0 .. 255;
-      x_LV95 : 2400000.000 .. 2800000.000;
-      /** Range korrigieren!
+      /** Kantonsnummer
        */
-      y_LV95 : 0.000 .. 1400000.000;
+      bezeichnungKt : TEXT*50;
+      /** Identifikator des Quartiers
+       */
+      quartierid : TEXT*11;
+      /** Identifikator der Beobachtung
+       */
+      beobachtungid : TEXT*11;
+      /** Deutsche Bezeichnung der Fledermausart
+       */
+      artennameDeutsch : TEXT;
+      /** HTTP-Link zum Quartier (www.swissbat.fledermausschutz.ch)
+       */
+      quartierlink : INTERLIS.URI;
+      /** HTTP-Link zur Beobachtung (www.swissbat.fledermausschutz.ch)
+       */
+      beobachtunglink : INTERLIS.URI;
+      /** Datum an dem das Quartier zerstört wurde
+       */
+      qex : INTERLIS.XMLDate;
+      /** Ist Quartier aktiv? ja/nein
+       */
+      inaktiv : 0 .. 1;
+      /** Ist Quartier verwaist? ja/nein
+       */
+      verwaist : 0 .. 1;
+      /** Ostwert der Koordinate des Quartiers resp. der Beobachtung
+       */
+      x_LV95 : MANDATORY 2400000.000 .. 2800000.000;
+      /** Nordwert der Koordinate des Quartiers resp. der Beobachtung
+       */
+      y_LV95 : MANDATORY 1100000.000 .. 1400000.000;
       UNIQUE quartierid;
       UNIQUE beobachtungid;
+      MANDATORY CONSTRAINT DEFINED(quartierid) OR DEFINED(beobachtungid);
+      MANDATORY CONSTRAINT DEFINED(quartierlink) OR DEFINED(beobachtunglink);
     END Fledermausfundort;
 
   END Fledermausfundorte;
