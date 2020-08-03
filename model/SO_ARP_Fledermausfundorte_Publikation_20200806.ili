@@ -6,6 +6,7 @@ INTERLIS 2.3;
  *  !! 2020-08-06 | sz  | Ersterfassung
  *  !!==============================================================================
  */
+!!@ technicalContact=mailto:agi@bd.so.ch
 MODEL SO_ARP_Fledermausfundorte_Publikation_20200806 (de)
 AT "http://www.geo.so.ch/models/ARP"
 VERSION "2020-08-06"  =

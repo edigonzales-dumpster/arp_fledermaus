@@ -135,6 +135,7 @@ INSERT INTO arp_fledermaus.T_ILI2DB_MODEL (filename,iliversion,modelName,content
  *  !! 2020-07-28 | sz  | Ersterfassung
  *  !!==============================================================================
  */
+!!@ technicalContact=mailto:agi@bd.so.ch
 MODEL SO_ARP_Fledermausfundorte_20200728 (de)
 AT "http://www.geo.so.ch/models/ARP"
 VERSION "2020-07-28"  =
@@ -186,7 +187,7 @@ VERSION "2020-07-28"  =
   END Fledermausfundorte;
 
 END SO_ARP_Fledermausfundorte_20200728.
-','2020-08-03 12:19:03.608');
+','2020-08-03 17:02:03.657');
 INSERT INTO arp_fledermaus.T_ILI2DB_SETTINGS (tag,setting) VALUES ('ch.ehi.ili2db.createMetaInfo','True');
 INSERT INTO arp_fledermaus.T_ILI2DB_SETTINGS (tag,setting) VALUES ('ch.ehi.ili2db.beautifyEnumDispName','underscore');
 INSERT INTO arp_fledermaus.T_ILI2DB_SETTINGS (tag,setting) VALUES ('ch.interlis.ili2c.ilidirs','model/.;http://models.geo.admin.ch');
@@ -211,3 +212,4 @@ INSERT INTO arp_fledermaus.T_ILI2DB_SETTINGS (tag,setting) VALUES ('ch.ehi.ili2d
 INSERT INTO arp_fledermaus.T_ILI2DB_SETTINGS (tag,setting) VALUES ('ch.ehi.ili2db.multiLineTrafo','coalesce');
 INSERT INTO arp_fledermaus.T_ILI2DB_SETTINGS (tag,setting) VALUES ('ch.ehi.ili2db.multiSurfaceTrafo','coalesce');
 INSERT INTO arp_fledermaus.T_ILI2DB_SETTINGS (tag,setting) VALUES ('ch.ehi.ili2db.multilingualTrafo','expand');
+INSERT INTO arp_fledermaus.T_ILI2DB_META_ATTRS (ilielement,attr_name,attr_value) VALUES ('SO_ARP_Fledermausfundorte_20200728','technicalContact','mailto:agi@bd.so.ch');

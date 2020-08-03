@@ -13,6 +13,7 @@ buildscript {
 apply plugin: "ch.so.agi.gretl"
 
 import ch.so.agi.gretl.tasks.*
+import ch.so.agi.gretl.api.TransferSet
 import ch.so.agi.gretl.util.TaskUtil
 import java.nio.file.Paths
 import java.nio.file.Files
@@ -90,4 +91,12 @@ task importCsv(type: CsvImport, dependsOn: 'validateCsv') {
     dataFile = file(pathToTempFolder.toString()+"/export.csv")
 }
 
+task transferFledermausPub(type: Db2Db, dependsOn: 'importCsv') {
+    sourceDb = [dbUriEdit, dbUserEdit, dbPwdEdit]
+    targetDb = [dbUriEdit, dbUserEdit, dbPwdEdit]
+    //targetDb = [dbUriPub, dbUserPub, dbPwdPub]
+    transferSets = [
+            new TransferSet('arp_fledermaus_pub.sql', 'arp_fledermaus_pub.fledermausfundrte_fledermausfundort', true)
+    ];
+}
 
