@@ -7,7 +7,7 @@ CREATE TABLE arp_fledermaus_pub.fledermausfundrte_fledermausfundort (
   ,typ varchar(255) NOT NULL
   ,art text NULL
   ,swissbat_link varchar(1023) NOT NULL
-  ,astatus varchar(255) NOT NULL
+  ,quartierstatus varchar(255) NULL
   ,geometrie geometry(POINT,2056) NOT NULL
 )
 ;
@@ -17,8 +17,8 @@ COMMENT ON COLUMN arp_fledermaus_pub.fledermausfundrte_fledermausfundort.identif
 COMMENT ON COLUMN arp_fledermaus_pub.fledermausfundrte_fledermausfundort.typ IS 'Fundorttyp';
 COMMENT ON COLUMN arp_fledermaus_pub.fledermausfundrte_fledermausfundort.art IS 'Deutsche Bezeichnung der Fledermausarten (kommasepariert).';
 COMMENT ON COLUMN arp_fledermaus_pub.fledermausfundrte_fledermausfundort.swissbat_link IS 'HTTP-Link zur swissbat-Webanwendung';
-COMMENT ON COLUMN arp_fledermaus_pub.fledermausfundrte_fledermausfundort.astatus IS 'Status des Quartiers';
-COMMENT ON COLUMN arp_fledermaus_pub.fledermausfundrte_fledermausfundort.geometrie IS 'Koordinatre des Quartiers resp. der Beobachtung';
+COMMENT ON COLUMN arp_fledermaus_pub.fledermausfundrte_fledermausfundort.quartierstatus IS 'Status des Quartiers';
+COMMENT ON COLUMN arp_fledermaus_pub.fledermausfundrte_fledermausfundort.geometrie IS 'Koordinate des Quartiers resp. der Beobachtung';
 CREATE TABLE arp_fledermaus_pub.T_ILI2DB_BASKET (
   T_Id bigint PRIMARY KEY
   ,dataset bigint NULL
@@ -59,7 +59,7 @@ CREATE TABLE arp_fledermaus_pub.T_ILI2DB_MODEL (
   ,PRIMARY KEY (iliversion,modelName)
 )
 ;
-CREATE TABLE arp_fledermaus_pub.fledermasfndrte_fledermausfundort_status (
+CREATE TABLE arp_fledermaus_pub.fledermasfndrte_fledermausfundort_quartierstatus (
   itfCode integer PRIMARY KEY
   ,iliCode varchar(1024) NOT NULL
   ,seq integer NULL
@@ -119,19 +119,19 @@ CREATE UNIQUE INDEX T_ILI2DB_ATTRNAME_ColOwner_SqlName_key ON arp_fledermaus_pub
 ;
 INSERT INTO arp_fledermaus_pub.T_ILI2DB_CLASSNAME (IliName,SqlName) VALUES ('SO_ARP_Fledermausfundorte_Publikation_20200806.Fledermausfundorte.Fledermausfundort','fledermausfundrte_fledermausfundort');
 INSERT INTO arp_fledermaus_pub.T_ILI2DB_CLASSNAME (IliName,SqlName) VALUES ('SO_ARP_Fledermausfundorte_Publikation_20200806.Fledermausfundorte.Fledermausfundort.Typ','fledermasfndrte_fledermausfundort_typ');
-INSERT INTO arp_fledermaus_pub.T_ILI2DB_CLASSNAME (IliName,SqlName) VALUES ('SO_ARP_Fledermausfundorte_Publikation_20200806.Fledermausfundorte.Fledermausfundort.Status','fledermasfndrte_fledermausfundort_status');
+INSERT INTO arp_fledermaus_pub.T_ILI2DB_CLASSNAME (IliName,SqlName) VALUES ('SO_ARP_Fledermausfundorte_Publikation_20200806.Fledermausfundorte.Fledermausfundort.Quartierstatus','fledermasfndrte_fledermausfundort_quartierstatus');
 INSERT INTO arp_fledermaus_pub.T_ILI2DB_ATTRNAME (IliName,SqlName,ColOwner,Target) VALUES ('SO_ARP_Fledermausfundorte_Publikation_20200806.Fledermausfundorte.Fledermausfundort.Geometrie','geometrie','fledermausfundrte_fledermausfundort',NULL);
 INSERT INTO arp_fledermaus_pub.T_ILI2DB_ATTRNAME (IliName,SqlName,ColOwner,Target) VALUES ('SO_ARP_Fledermausfundorte_Publikation_20200806.Fledermausfundorte.Fledermausfundort.Typ','typ','fledermausfundrte_fledermausfundort',NULL);
-INSERT INTO arp_fledermaus_pub.T_ILI2DB_ATTRNAME (IliName,SqlName,ColOwner,Target) VALUES ('SO_ARP_Fledermausfundorte_Publikation_20200806.Fledermausfundorte.Fledermausfundort.Status','astatus','fledermausfundrte_fledermausfundort',NULL);
 INSERT INTO arp_fledermaus_pub.T_ILI2DB_ATTRNAME (IliName,SqlName,ColOwner,Target) VALUES ('SO_ARP_Fledermausfundorte_Publikation_20200806.Fledermausfundorte.Fledermausfundort.Identifikator','identifikator','fledermausfundrte_fledermausfundort',NULL);
+INSERT INTO arp_fledermaus_pub.T_ILI2DB_ATTRNAME (IliName,SqlName,ColOwner,Target) VALUES ('SO_ARP_Fledermausfundorte_Publikation_20200806.Fledermausfundorte.Fledermausfundort.Quartierstatus','quartierstatus','fledermausfundrte_fledermausfundort',NULL);
 INSERT INTO arp_fledermaus_pub.T_ILI2DB_ATTRNAME (IliName,SqlName,ColOwner,Target) VALUES ('SO_ARP_Fledermausfundorte_Publikation_20200806.Fledermausfundorte.Fledermausfundort.Art','art','fledermausfundrte_fledermausfundort',NULL);
 INSERT INTO arp_fledermaus_pub.T_ILI2DB_ATTRNAME (IliName,SqlName,ColOwner,Target) VALUES ('SO_ARP_Fledermausfundorte_Publikation_20200806.Fledermausfundorte.Fledermausfundort.swissbat_link','swissbat_link','fledermausfundrte_fledermausfundort',NULL);
 INSERT INTO arp_fledermaus_pub.T_ILI2DB_TRAFO (iliname,tag,setting) VALUES ('SO_ARP_Fledermausfundorte_Publikation_20200806.Fledermausfundorte.Fledermausfundort','ch.ehi.ili2db.inheritance','newClass');
 INSERT INTO arp_fledermaus_pub.T_ILI2DB_INHERITANCE (thisClass,baseClass) VALUES ('SO_ARP_Fledermausfundorte_Publikation_20200806.Fledermausfundorte.Fledermausfundort',NULL);
-INSERT INTO arp_fledermaus_pub.fledermasfndrte_fledermausfundort_status (seq,iliCode,itfCode,dispName,inactive,description) VALUES (NULL,'zerstoert',0,'zerstoert',FALSE,NULL);
-INSERT INTO arp_fledermaus_pub.fledermasfndrte_fledermausfundort_status (seq,iliCode,itfCode,dispName,inactive,description) VALUES (NULL,'verwaist',1,'verwaist',FALSE,NULL);
-INSERT INTO arp_fledermaus_pub.fledermasfndrte_fledermausfundort_status (seq,iliCode,itfCode,dispName,inactive,description) VALUES (NULL,'inaktiv',2,'inaktiv',FALSE,NULL);
-INSERT INTO arp_fledermaus_pub.fledermasfndrte_fledermausfundort_status (seq,iliCode,itfCode,dispName,inactive,description) VALUES (NULL,'aktiv',3,'aktiv',FALSE,NULL);
+INSERT INTO arp_fledermaus_pub.fledermasfndrte_fledermausfundort_quartierstatus (seq,iliCode,itfCode,dispName,inactive,description) VALUES (NULL,'zerstoert',0,'zerstoert',FALSE,'Quartier existiert nicht mehr');
+INSERT INTO arp_fledermaus_pub.fledermasfndrte_fledermausfundort_quartierstatus (seq,iliCode,itfCode,dispName,inactive,description) VALUES (NULL,'verwaist',1,'verwaist',FALSE,'letzte 10 Jahre nur Negativkontrollen');
+INSERT INTO arp_fledermaus_pub.fledermasfndrte_fledermausfundort_quartierstatus (seq,iliCode,itfCode,dispName,inactive,description) VALUES (NULL,'inaktiv',2,'inaktiv',FALSE,'letzte 3 Jahre nur Negativkontrollen');
+INSERT INTO arp_fledermaus_pub.fledermasfndrte_fledermausfundort_quartierstatus (seq,iliCode,itfCode,dispName,inactive,description) VALUES (NULL,'aktiv',3,'aktiv',FALSE,NULL);
 INSERT INTO arp_fledermaus_pub.fledermasfndrte_fledermausfundort_typ (seq,iliCode,itfCode,dispName,inactive,description) VALUES (NULL,'Beobachtung',0,'Beobachtung',FALSE,NULL);
 INSERT INTO arp_fledermaus_pub.fledermasfndrte_fledermausfundort_typ (seq,iliCode,itfCode,dispName,inactive,description) VALUES (NULL,'Quartier',1,'Quartier',FALSE,NULL);
 INSERT INTO arp_fledermaus_pub.T_ILI2DB_COLUMN_PROP (tablename,subtype,columnname,tag,setting) VALUES ('fledermausfundrte_fledermausfundort',NULL,'geometrie','ch.ehi.ili2db.coordDimension','2');
@@ -141,9 +141,9 @@ INSERT INTO arp_fledermaus_pub.T_ILI2DB_COLUMN_PROP (tablename,subtype,columnnam
 INSERT INTO arp_fledermaus_pub.T_ILI2DB_COLUMN_PROP (tablename,subtype,columnname,tag,setting) VALUES ('fledermausfundrte_fledermausfundort',NULL,'geometrie','ch.ehi.ili2db.c1Min','2460000.000');
 INSERT INTO arp_fledermaus_pub.T_ILI2DB_COLUMN_PROP (tablename,subtype,columnname,tag,setting) VALUES ('fledermausfundrte_fledermausfundort',NULL,'geometrie','ch.ehi.ili2db.c2Min','1045000.000');
 INSERT INTO arp_fledermaus_pub.T_ILI2DB_COLUMN_PROP (tablename,subtype,columnname,tag,setting) VALUES ('fledermausfundrte_fledermausfundort',NULL,'geometrie','ch.ehi.ili2db.srid','2056');
-INSERT INTO arp_fledermaus_pub.T_ILI2DB_TABLE_PROP (tablename,tag,setting) VALUES ('fledermasfndrte_fledermausfundort_status','ch.ehi.ili2db.tableKind','ENUM');
 INSERT INTO arp_fledermaus_pub.T_ILI2DB_TABLE_PROP (tablename,tag,setting) VALUES ('fledermasfndrte_fledermausfundort_typ','ch.ehi.ili2db.tableKind','ENUM');
 INSERT INTO arp_fledermaus_pub.T_ILI2DB_TABLE_PROP (tablename,tag,setting) VALUES ('fledermausfundrte_fledermausfundort','ch.ehi.ili2db.tableKind','CLASS');
+INSERT INTO arp_fledermaus_pub.T_ILI2DB_TABLE_PROP (tablename,tag,setting) VALUES ('fledermasfndrte_fledermausfundort_quartierstatus','ch.ehi.ili2db.tableKind','ENUM');
 INSERT INTO arp_fledermaus_pub.T_ILI2DB_MODEL (filename,iliversion,modelName,content,importDate) VALUES ('CHBase_Part4_ADMINISTRATIVEUNITS_20110830.ili','2.3','CHAdminCodes_V1 AdministrativeUnits_V1{ CHAdminCodes_V1 InternationalCodes_V1 Dictionaries_V1 Localisation_V1 INTERLIS} AdministrativeUnitsCH_V1{ CHAdminCodes_V1 InternationalCodes_V1 LocalisationCH_V1 AdministrativeUnits_V1 INTERLIS}','/* ########################################################################
    CHBASE - BASE MODULES OF THE SWISS FEDERATION FOR MINIMAL GEODATA MODELS
    ======
@@ -364,7 +364,7 @@ MODEL AdministrativeUnitsCH_V1 (en)
 END AdministrativeUnitsCH_V1.
 
 !! ########################################################################
-','2020-08-03 12:18:58.106');
+','2020-08-03 12:37:24.549');
 INSERT INTO arp_fledermaus_pub.T_ILI2DB_MODEL (filename,iliversion,modelName,content,importDate) VALUES ('Units-20120220.ili','2.3','Units','!! File Units.ili Release 2012-02-20
 
 INTERLIS 2.3;
@@ -462,7 +462,7 @@ CONTRACTED TYPE MODEL Units (en) AT "http://www.interlis.ch/models"
 
 END Units.
 
-','2020-08-03 12:18:58.106');
+','2020-08-03 12:37:24.549');
 INSERT INTO arp_fledermaus_pub.T_ILI2DB_MODEL (filename,iliversion,modelName,content,importDate) VALUES ('CoordSys-20151124.ili','2.3','CoordSys','!! File CoordSys.ili Release 2015-11-24
 
 INTERLIS 2.3;
@@ -677,7 +677,7 @@ REFSYSTEM MODEL CoordSys (en) AT "http://www.interlis.ch/models"
 
 END CoordSys.
 
-','2020-08-03 12:18:58.106');
+','2020-08-03 12:37:24.549');
 INSERT INTO arp_fledermaus_pub.T_ILI2DB_MODEL (filename,iliversion,modelName,content,importDate) VALUES ('CHBase_Part2_LOCALISATION_20110830.ili','2.3','InternationalCodes_V1 Localisation_V1{ InternationalCodes_V1} LocalisationCH_V1{ InternationalCodes_V1 Localisation_V1} Dictionaries_V1{ InternationalCodes_V1} DictionariesCH_V1{ InternationalCodes_V1 Dictionaries_V1}','/* ########################################################################
    CHBASE - BASE MODULES OF THE SWISS FEDERATION FOR MINIMAL GEODATA MODELS
    ======
@@ -849,7 +849,7 @@ MODEL DictionariesCH_V1 (en)
 END DictionariesCH_V1.
 
 !! ########################################################################
-','2020-08-03 12:18:58.106');
+','2020-08-03 12:37:24.549');
 INSERT INTO arp_fledermaus_pub.T_ILI2DB_MODEL (filename,iliversion,modelName,content,importDate) VALUES ('CHBase_Part1_GEOMETRY_20110830.ili','2.3','GeometryCHLV03_V1{ CoordSys Units INTERLIS} GeometryCHLV95_V1{ CoordSys Units INTERLIS}','/* ########################################################################
    CHBASE - BASE MODULES OF THE SWISS FEDERATION FOR MINIMAL GEODATA MODELS
    ======
@@ -1027,7 +1027,7 @@ TYPE MODEL GeometryCHLV95_V1 (en)
 END GeometryCHLV95_V1.
 
 !! ########################################################################
-','2020-08-03 12:18:58.106');
+','2020-08-03 12:37:24.549');
 INSERT INTO arp_fledermaus_pub.T_ILI2DB_MODEL (filename,iliversion,modelName,content,importDate) VALUES ('SO_ARP_Fledermausfundorte_Publikation_20200806.ili','2.3','SO_ARP_Fledermausfundorte_Publikation_20200806{ GeometryCHLV95_V1 CHAdminCodes_V1}','INTERLIS 2.3;
 
 /** !!------------------------------------------------------------------------------
@@ -1063,21 +1063,28 @@ VERSION "2020-08-06"  =
       swissbat_link : MANDATORY INTERLIS.URI;
       /** Status des Quartiers
        */
-      Status : MANDATORY (
+      Quartierstatus : (
+        /** Quartier existiert nicht mehr
+         */
         zerstoert,
+        /** letzte 10 Jahre nur Negativkontrollen
+         */
         verwaist,
+        /** letzte 3 Jahre nur Negativkontrollen
+         */
         inaktiv,
         aktiv
       );
-      /** Koordinatre des Quartiers resp. der Beobachtung
+      /** Koordinate des Quartiers resp. der Beobachtung
        */
       Geometrie : MANDATORY GeometryCHLV95_V1.Coord2;
+      MANDATORY CONSTRAINT ((Typ == #Quartier) AND DEFINED(Quartierstatus)) OR (Typ == #Beobachtung);
     END Fledermausfundort;
 
   END Fledermausfundorte;
 
 END SO_ARP_Fledermausfundorte_Publikation_20200806.
-','2020-08-03 12:18:58.106');
+','2020-08-03 12:37:24.549');
 INSERT INTO arp_fledermaus_pub.T_ILI2DB_SETTINGS (tag,setting) VALUES ('ch.ehi.ili2db.createMetaInfo','True');
 INSERT INTO arp_fledermaus_pub.T_ILI2DB_SETTINGS (tag,setting) VALUES ('ch.ehi.ili2db.beautifyEnumDispName','underscore');
 INSERT INTO arp_fledermaus_pub.T_ILI2DB_SETTINGS (tag,setting) VALUES ('ch.interlis.ili2c.ilidirs','model/.;http://models.geo.admin.ch');

@@ -33,15 +33,22 @@ VERSION "2020-08-06"  =
       swissbat_link : MANDATORY INTERLIS.URI;
       /** Status des Quartiers
        */
-      Status : MANDATORY (
+      Quartierstatus : (
+        /** Quartier existiert nicht mehr
+         */
         zerstoert,
+        /** letzte 10 Jahre nur Negativkontrollen
+         */
         verwaist,
+        /** letzte 3 Jahre nur Negativkontrollen
+         */
         inaktiv,
         aktiv
       );
-      /** Koordinatre des Quartiers resp. der Beobachtung
+      /** Koordinate des Quartiers resp. der Beobachtung
        */
       Geometrie : MANDATORY GeometryCHLV95_V1.Coord2;
+      MANDATORY CONSTRAINT ((Typ == #Quartier) AND DEFINED(Quartierstatus)) OR (Typ == #Beobachtung);
     END Fledermausfundort;
 
   END Fledermausfundorte;
